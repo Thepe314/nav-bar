@@ -16,9 +16,28 @@ export class AuthService {
   private readonly localStorage = inject(LocalStorage);
   private readonly router = inject(Router);
   private readonly TOKEN_KEY = 'jwt_token';
+  private readonly EXPIRY_KEY = 'token_expiry';
+  private readonly REMEMBER_KEY = 'remember_me';
+  // 2 hours session, 7 days remember me
+  private readonly SESSION_EXPIRY_MS = 2 * 60 * 60 * 1000;
+  private readonly REMEMBER_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000;
+  private lastSubstantiveRefresh = 0;
+
+  constructor() {
+    const activityHandler = () => this.refreshExpiryIfNeeded();
+    window.addEventListener('mousemove', activityHandler);
+    window.addEventListener('keydown', activityHandler);
+
+    // Periodically check if session has expired, force logout if so.
+    setInterval(() => {
+      if (this.getToken()) {
+        this.isLoggedIn(); // Evaluates expiry and auto-logs out
+      }
+    }, 60 * 1000); // check every minute
+  }
 
   // Simulates a backend login and token generation
-  login(identifier: string, password: string): boolean {
+  login(identifier: string, password: string, rememberMe: boolean = false): boolean {
     const users = this.localStorage.getItem<RegisteredUser[]>('users') || [];
     // Allows sign-in using either email or username from signup.
     const foundUser = users.find(
@@ -31,6 +50,10 @@ export class AuthService {
       const payload = { email: foundUser.email, role: 'user' }; // Assuming a default role
       const token = btoa(JSON.stringify(payload)); // Simple base64 encoding
       this.localStorage.setItem(this.TOKEN_KEY, token);
+      // Set expiry based on rememberMe flag
+      const expiry = Date.now() + (rememberMe ? this.REMEMBER_EXPIRY_MS : this.SESSION_EXPIRY_MS);
+      this.localStorage.setItem(this.EXPIRY_KEY, expiry.toString());
+      this.localStorage.setItem(this.REMEMBER_KEY, rememberMe ? 'true' : 'false');
       return true;
     }
     return false;
@@ -42,8 +65,16 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     const token = this.getToken();
-    // In a real app, you would also check token expiration and validity
-    return !!token;
+    if (!token) return false;
+    const expiryStr = this.localStorage.getItem<string>(this.EXPIRY_KEY);
+    if (!expiryStr) return false;
+    const expiry = parseInt(expiryStr, 10);
+    if (Date.now() > expiry) {
+      // Session expired
+      this.logout();
+      return false;
+    }
+    return true;
   }
 
   logout(): void {
@@ -62,5 +93,19 @@ export class AuthService {
       }
     }
     return null;
+  }
+
+  /** Refresh expiry when user is active and not using Remember Me */
+  private refreshExpiryIfNeeded(): void {
+    const remember = this.localStorage.getItem(this.REMEMBER_KEY) === 'true';
+    if (!remember) {
+      const now = Date.now();
+      // Only update local storage once every minute to prevent performance issues
+      if (now - this.lastSubstantiveRefresh > 60000) {
+        const newExpiry = now + this.SESSION_EXPIRY_MS;
+        this.localStorage.setItem(this.EXPIRY_KEY, newExpiry.toString());
+        this.lastSubstantiveRefresh = now;
+      }
+    }
   }
 }

@@ -73,6 +73,10 @@ type RegisteredUser = {
             <div class="invalid-feedback">Password must be at least 6 characters.</div>
           </div>
 
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="rememberMe" [(ngModel)]="user.rememberMe" name="rememberMe">
+            <label class="form-check-label" for="rememberMe">Remember Me</label>
+          </div>
           <button type="submit" class="btn btn-primary w-100 mt-2" [disabled]="loginForm.invalid">
             Sign In
           </button>
@@ -91,7 +95,8 @@ export class LoginPage implements AfterViewInit {
   // Login now accepts a single identifier field (email OR username).
   user = {
     identifier: '',
-    password: ''
+    password: '',
+    rememberMe: false
   };
 
   private readonly localStorage = inject(LocalStorage);
@@ -125,7 +130,7 @@ export class LoginPage implements AfterViewInit {
         return;
       }
 
-      if (this.authService.login(this.user.identifier, this.user.password)) {
+      if (this.authService.login(this.user.identifier, this.user.password, this.user.rememberMe)) {
         this.toastService.success('Logged in successfully!');
         window.setTimeout(() => {
           this.router.navigate(['/dashboard']);
