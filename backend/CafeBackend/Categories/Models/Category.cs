@@ -1,4 +1,6 @@
-namespace CafeBackend.Models
+using CafeBackend.Models;
+
+namespace CafeBackend.Categories.Models
 {
     public class Category
     {
