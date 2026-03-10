@@ -1,7 +1,6 @@
 
 using CafeBackend.Auth.Models;
 using CafeBackend.Categories.Models;
-using CafeBackend.Models;
 using Microsoft.EntityFrameworkCore;
 
 

@@ -20,6 +20,7 @@ C:\Users\thapa\OneDrive\Desktop\Projects .Net\CafeProject\nav-bar\backend\CafeBa
 C:\Users\thapa\OneDrive\Desktop\Projects .Net\CafeProject\nav-bar\backend\CafeBackend\bin\Debug\net10.0\BCrypt.Net-Next.dll
 C:\Users\thapa\OneDrive\Desktop\Projects .Net\CafeProject\nav-bar\backend\CafeBackend\bin\Debug\net10.0\DotNetEnv.dll
 C:\Users\thapa\OneDrive\Desktop\Projects .Net\CafeProject\nav-bar\backend\CafeBackend\bin\Debug\net10.0\Humanizer.dll
+C:\Users\thapa\OneDrive\Desktop\Projects .Net\CafeProject\nav-bar\backend\CafeBackend\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\thapa\OneDrive\Desktop\Projects .Net\CafeProject\nav-bar\backend\CafeBackend\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\thapa\OneDrive\Desktop\Projects .Net\CafeProject\nav-bar\backend\CafeBackend\bin\Debug\net10.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\thapa\OneDrive\Desktop\Projects .Net\CafeProject\nav-bar\backend\CafeBackend\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll
@@ -163,4 +164,3 @@ C:\Users\thapa\OneDrive\Desktop\Projects .Net\CafeProject\nav-bar\backend\CafeBa
 C:\Users\thapa\OneDrive\Desktop\Projects .Net\CafeProject\nav-bar\backend\CafeBackend\obj\Debug\net10.0\CafeBackend.pdb
 C:\Users\thapa\OneDrive\Desktop\Projects .Net\CafeProject\nav-bar\backend\CafeBackend\obj\Debug\net10.0\CafeBackend.genruntimeconfig.cache
 C:\Users\thapa\OneDrive\Desktop\Projects .Net\CafeProject\nav-bar\backend\CafeBackend\obj\Debug\net10.0\ref\CafeBackend.dll
-C:\Users\thapa\OneDrive\Desktop\Projects .Net\CafeProject\nav-bar\backend\CafeBackend\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
