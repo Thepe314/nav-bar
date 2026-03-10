@@ -1,6 +1,9 @@
+
+using CafeBackend.Auth.Models;
+using CafeBackend.Categories.Models;
 using CafeBackend.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
+
 
 namespace CafeBackend.Data
 {
@@ -12,10 +15,10 @@ namespace CafeBackend.Data
             
         }
 
-        //Tables
-        public DbSet<Category> Categories {get;set;}
-        public DbSet<Product> Products {get;set;}
+        //Tables   
+        public DbSet<User> Users {get;set;}
 
-        public DbSet<Order> Orders {get;set;}
+        public DbSet<Category> categories{get;set;}
+
     }
 }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CafeBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+00fe430590b27d01d85149a782db03562cae2c50")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f6ace4c93adb2827f0d1975372a459956554c67e")]
 [assembly: System.Reflection.AssemblyProductAttribute("CafeBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CafeBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
