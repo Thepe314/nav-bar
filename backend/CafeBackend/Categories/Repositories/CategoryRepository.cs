@@ -1,11 +1,10 @@
 using CafeBackend.Categories.Models;
 using CafeBackend.Data;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace CafeBackend.Categories.Repositories
 {
-    public class CategoryRepository 
+    public class CategoryRepository : ICategoryRepository
     {
         //readonly
 
@@ -20,13 +19,35 @@ namespace CafeBackend.Categories.Repositories
           //List all Category
         public async Task <IEnumerable<Category>> ListAllCategory()
         {
-            await _context.categories.ToListAsync();
+            return await _context.categories.ToListAsync();
         }
 
-        //List by id
-        public async Task <Category?> FindCategoryById(int id)
+        // by Name
+        public async Task <Category?> FindCategoryByName(string CategoryName)
         {
-            return await _context.categories.FindAsync(id);
+            return await _context.categories
+            .FirstOrDefaultAsync(c=> c.CategoryName.ToLower() == CategoryName.ToLower());
+        }
+
+        //By id 
+        public async  Task <Category?> FindCategoryById(int id)
+        {
+              return await _context.categories.FindAsync(id);
+        }
+
+        // Searches categories by name, prioritizing names that start with the search term,
+        // then includes partial matches. Results are paginated (default 10 per page).
+         public async Task<List<Category>> SearchCategoriesByName(string searchTerm, int page = 1, int pageSize =10)
+        {
+        
+            var lowerTerm = searchTerm.Trim().ToLower();
+            return await _context.categories
+            .Where(c=> c.CategoryName.ToLower().Contains(lowerTerm))
+            .OrderByDescending(c=> c.CategoryName.ToLower().StartsWith(lowerTerm))
+            .ThenBy(c => c.CategoryName)
+            .Skip((page-1)*pageSize)
+            .Take(pageSize)
+            .ToListAsync();
         }
 
         //Create new category
@@ -55,8 +76,14 @@ namespace CafeBackend.Categories.Repositories
 
         public async Task DeleteCategory(int id)
         {
+            //Check if it exists in database
            var category = await _context.categories.FindAsync(id);
-            
+           if(category == null)
+            {
+                return;
+            }
+
+            _context.categories.Remove(category);
             await _context.SaveChangesAsync();
         }
     }

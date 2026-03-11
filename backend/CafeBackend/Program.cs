@@ -2,6 +2,7 @@
 using System.Text;
 using CafeBackend.Auth.Repositories;
 using CafeBackend.Auth.Service;
+using CafeBackend.Categories.Repositories;
 using CafeBackend.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -31,12 +32,19 @@ builder.Services.AddSwaggerGen(c =>
 
 //DI Repo
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddSingleton<TokenService>();
 
 //Easy access to JwtSettings in appconfig
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 
-var key = Encoding.ASCII.GetBytes(jwtSettings["SecretKey"]);
+var secret = jwtSettings["SecretKey"];
+if (string.IsNullOrWhiteSpace(secret))
+{
+    throw new InvalidOperationException("JWT SecretKey is missing in configuration.");
+}
+
+var key = Encoding.ASCII.GetBytes(secret);
 
 //Configuring our jwt schemes
 builder.Services.AddAuthentication(options =>
@@ -71,8 +79,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapControllers();
 
+app.MapControllers();
 app.UseSwaggerUI();
 
 app.UseSwagger();

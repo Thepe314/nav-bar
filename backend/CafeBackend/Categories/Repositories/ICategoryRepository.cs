@@ -1,4 +1,4 @@
-using CafeBackend.Auth.Models;
+
 using CafeBackend.Categories.Models;
 
 namespace CafeBackend.Categories.Repositories
@@ -8,7 +8,13 @@ namespace CafeBackend.Categories.Repositories
         //List all Category
         Task <IEnumerable<Category>> ListAllCategory();
 
-        //List by id
+        // Category by name
+        Task <Category?> FindCategoryByName(string CategoryName);
+
+        //Categories
+        Task<List<Category>> SearchCategoriesByName(string searchTerm, int page = 1, int pageSize =10);
+
+        //by id
         Task <Category?> FindCategoryById(int id);
 
         //Create new category
